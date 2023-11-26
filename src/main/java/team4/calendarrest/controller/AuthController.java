@@ -9,10 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team4.calendarrest.Repositories.EventRepository;
 import team4.calendarrest.Repositories.UserRepository;
 import team4.calendarrest.enteties.Event;
@@ -39,9 +36,9 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginreq) {
+    public ResponseEntity<String> authenticateUser(@RequestParam String usernameOrEmail, @RequestParam String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                loginreq.getUsernameOrEmail(), loginreq.getPassword());
+                usernameOrEmail, password);
         Authentication authentication = authenticationManager.authenticate(authToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

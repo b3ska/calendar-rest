@@ -32,9 +32,6 @@ public class EventController {
     @Autowired
     private EventRepository eventRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @PostMapping("/add")
     public ResponseEntity<String> addEvent(@RequestBody AddEventRequest request) {
         // Authentication
@@ -42,7 +39,6 @@ public class EventController {
                 request.getUsernameOrEmail(), request.getPassword());
         Authentication authentication = authenticationManager.authenticate(authToken);
 
-        // Check if the user exists
         Optional<User> optionalUser = userRepository.findByUsernameOrEmail(request.getUsernameOrEmail(), request.getUsernameOrEmail());
         if (optionalUser.isEmpty()) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
@@ -50,31 +46,25 @@ public class EventController {
 
         User user = optionalUser.get();
 
-        // Create and save the event
         Event event = new Event(user, request.getName(), request.getDate(), request.getStart_at(), request.getEnd_at());
         eventRepository.save(event);
 
-        // Set the authentication in the SecurityContextHolder
-
-        // Return the ID of the newly added event in the response
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Event>> getAllEventsForCurrentUser(@RequestBody LoginRequest logReq) {
+    public ResponseEntity<List<Event>> getAllEventsForCurrentUser(@RequestParam String usernameOrEmail, @RequestParam String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                logReq.getUsernameOrEmail(), logReq.getPassword());
+                usernameOrEmail, password);
         Authentication authentication = authenticationManager.authenticate(authToken);
 
-        // Find the user based on username or email
-        Optional<User> optionalUser = userRepository.findByUsernameOrEmail(logReq.getUsernameOrEmail(), logReq.getUsernameOrEmail());
+        Optional<User> optionalUser = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
         if (optionalUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         User user = optionalUser.get();
 
-        // Retrieve all events associated with the user
         List<Event> userEvents = eventRepository.findByUser(user);
         System.out.println(userEvents);
         return new ResponseEntity<>(userEvents, HttpStatus.OK);
@@ -86,17 +76,15 @@ public class EventController {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 usernameOrEmail, password);
         Authentication authentication = authenticationManager.authenticate(authToken);
-        // Check if the event with the given ID exists
+
         Optional<Event> optionalEvent = eventRepository.findById(eventId);
 
         if (optionalEvent.isPresent()) {
-            // Event found, proceed with deletion
             Event eventToDelete = optionalEvent.get();
             eventRepository.delete(eventToDelete);
 
             return new ResponseEntity("Success", HttpStatus.OK); // Successful deletion
         } else {
-            // Event not found, return a 404 Not Found response
             return ResponseEntity.notFound().build();
         }
     }
