@@ -40,11 +40,12 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<String> authenticateUser(@RequestBody LoginRequest loginreq) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginreq.getUsernameOrEmail(), loginreq.getPassword()));
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                loginreq.getUsernameOrEmail(), loginreq.getPassword());
+        Authentication authentication = authenticationManager.authenticate(authToken);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+        return new ResponseEntity<>("Sign in successful!", HttpStatus.OK);
     }
 
     @PostMapping("/signup")

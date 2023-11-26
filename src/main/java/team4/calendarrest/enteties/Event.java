@@ -26,4 +26,16 @@ public class Event {
     private Date date;
     private Time start_at;
     private Time end_at;
+
+    public Event(User user, String name, Date date, Time start_at, Time end_at) {
+        this.user = user;
+        this.name = name;
+        this.date = date;
+        this.start_at = start_at;
+        this.end_at = end_at;
+    }
+
+    public Event() {
+
+    }
 }
