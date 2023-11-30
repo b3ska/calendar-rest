@@ -1,2 +1,9 @@
-package team4.calendarrest.requests;public class SignInRequest {
+package team4.calendarrest.requests;
+
+import lombok.Getter;
+
+@Getter
+public class SignInRequest {
+    String usernameOrEmail;
+    String password;
 }

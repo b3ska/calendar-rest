@@ -6,15 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import team4.calendarrest.Repositories.EventRepository;
 import team4.calendarrest.Repositories.UserRepository;
 import team4.calendarrest.enteties.Event;
 import team4.calendarrest.enteties.User;
 import team4.calendarrest.requests.AddEventRequest;
-import team4.calendarrest.requests.LoginRequest;
+import team4.calendarrest.requests.SignInRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,12 +51,12 @@ public class EventController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Event>> getAllEventsForCurrentUser(@RequestBody String usernameOrEmail, @RequestBody String password) {
+    public ResponseEntity<List<Event>> getAllEventsForCurrentUser(@RequestBody SignInRequest signInReq) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                usernameOrEmail, password);
+                signInReq.getUsernameOrEmail(), signInReq.getPassword());
         Authentication authentication = authenticationManager.authenticate(authToken);
 
-        Optional<User> optionalUser = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
+        Optional<User> optionalUser = userRepository.findByUsernameOrEmail(signInReq.getUsernameOrEmail(), signInReq.getPassword());
         if (optionalUser.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -70,10 +68,10 @@ public class EventController {
     }
 
     @DeleteMapping("/del/{eventId}")
-    public ResponseEntity<?> deleteEvent(@PathVariable long eventId, @RequestBody String usernameOrEmail, @RequestBody String password) {
+    public ResponseEntity<?> deleteEvent(@PathVariable long eventId, @RequestBody SignInRequest signInReq) {
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                usernameOrEmail, password);
+                signInReq.getUsernameOrEmail(), signInReq.getPassword());
         Authentication authentication = authenticationManager.authenticate(authToken);
 
         Optional<Event> optionalEvent = eventRepository.findById(eventId);

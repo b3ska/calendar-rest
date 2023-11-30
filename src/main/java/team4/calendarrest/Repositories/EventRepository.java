@@ -6,7 +6,6 @@ import team4.calendarrest.enteties.Event;
 import team4.calendarrest.enteties.User;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
