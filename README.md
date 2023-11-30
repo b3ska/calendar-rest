@@ -1,5 +1,5 @@
 - start mysql server
-- create tables user & event
+- create database
 - create /src/main/resources/application.properties with your data:
 
 spring.datasource.url = jdbc:mysql://localhost:[default=3306]/[dbname]?useSSL=false&serverTimezone=UTC
