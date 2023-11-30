@@ -53,7 +53,7 @@ public class EventController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Event>> getAllEventsForCurrentUser(@RequestParam String usernameOrEmail, @RequestParam String password) {
+    public ResponseEntity<List<Event>> getAllEventsForCurrentUser(@RequestBody String usernameOrEmail, @RequestBody String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 usernameOrEmail, password);
         Authentication authentication = authenticationManager.authenticate(authToken);
@@ -66,12 +66,11 @@ public class EventController {
         User user = optionalUser.get();
 
         List<Event> userEvents = eventRepository.findByUser(user);
-        System.out.println(userEvents);
         return new ResponseEntity<>(userEvents, HttpStatus.OK);
     }
 
     @DeleteMapping("/del/{eventId}")
-    public ResponseEntity<?> deleteEvent(@PathVariable long eventId, @RequestParam String usernameOrEmail, @RequestParam String password) {
+    public ResponseEntity<?> deleteEvent(@PathVariable long eventId, @RequestBody String usernameOrEmail, @RequestBody String password) {
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 usernameOrEmail, password);

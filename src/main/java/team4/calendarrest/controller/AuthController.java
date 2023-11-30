@@ -36,7 +36,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestParam String usernameOrEmail, @RequestParam String password) {
+    public ResponseEntity<String> authenticateUser(@RequestBody String usernameOrEmail, @RequestBody String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 usernameOrEmail, password);
         Authentication authentication = authenticationManager.authenticate(authToken);

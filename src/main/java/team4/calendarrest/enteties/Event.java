@@ -38,4 +38,7 @@ public class Event {
     public Event() {
 
     }
+
+    public Event(long id, Object o, String name, java.util.Date date, Time startAt, Time endAt) {
+    }
 }
