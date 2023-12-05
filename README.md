@@ -15,4 +15,7 @@ spring.jpa.hibernate.ddl-auto = update
 logging.level.org.springframework.security=DEBUG
 # to run $: mvn spring-boot:run
 
+credit:
+https://www.javaguides.net/2021/10/login-and-registration-rest-api-using-spring-boot-spring-security-hibernate-mysql-database.html
 
+this program has models of requests and entities for sign-in, sign-up, user, and event.
