@@ -20,10 +20,10 @@ https://www.javaguides.net/2021/10/login-and-registration-rest-api-using-spring-
 
 this program has models of requests and entities of sign-in, sign-up, user, and event.
 
-endpoint-1: POST /api/event/add
-endpoint-2: GET /api/event/all
-endpoint-3: DELETE /api/event/del/{eventId}
-endpoint-4: POST /api/auth/signin
-endpoint-5: POST /api/auth/signup
+endpoint-1: POST /api/event/add<br />
+endpoint-2: GET /api/event/all<br />
+endpoint-3: DELETE /api/event/del/{eventId}<br />
+endpoint-4: POST /api/auth/signin<br />
+endpoint-5: POST /api/auth/signup<br />
 
 work should be done concerning security of data and the program.
